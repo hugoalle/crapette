@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crapette en ligne</title>
+</head>
+<body>
+    <div id="play-container">
+        <form action= '' method= "POST" id="form">
+            <input type="text" required>
+            <button type= "submit">Entrer votre nom</button> 
+        </form>
+    </div>
+
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        let form = document.getElementById("form");
+        let socket = io();
+
+    </script>
+</body>
+</html>

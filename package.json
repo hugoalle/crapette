@@ -1,0 +1,26 @@
+{
+  "name": "crapette",
+  "version": "1.0.0",
+  "description": "projet de jeu crapette en ligne à deux",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hugoalle/crapette.git"
+  },
+  "author": "Hugo ALLEMAND",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hugoalle/crapette/issues"
+  },
+  "homepage": "https://github.com/hugoalle/crapette#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.1.3"
+  }
+}
