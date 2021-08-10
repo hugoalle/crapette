@@ -5,11 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crapette en ligne</title>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="script.js" type="module"></script>
 </head>
 <body>
     <div id="play-container">
-        <form action= '' method= "POST" id="form">
+        <form id="form">
             <input type="text" required>
             <button type= "submit">Entrer votre nom</button> 
         </form>
