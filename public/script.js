@@ -5,25 +5,23 @@ let input = document.getElementById("input");
 
 form.addEventListener('submit', e => {
     e.preventDefault();
-    handleConnection(e);
+    socket.emit('playerSubmit', input.value);
     button.disabled = true;
 })        
 
-let handleConnection = function(e) {
-    let socket = io();
-    socket.on("connect", () => {
-        socket.emit("new-connection", input.value);
-    })
+let socket = io();
+socket.on("connect", () => {
+});
 
-    socket.on('display-connected-client', arrayName => {
-        for (let i = 0; i<arrayName.length; i++) {
-            let user = i == 0 ? document.getElementById("user1") : document.getElementById("user2");
-            user.innerText = `${arrayName[i]} is connected`;
-        }   
-    });
+socket.on('display-connected-clients', arrayName => {
+    for (let i = 0; i<arrayName.length; i++) {
+        let user = i == 0 ? document.getElementById("user1") : document.getElementById("user2");
+        user.innerText = `${arrayName[i]} is connected`;
+    }
+});
 
-    socket.on('too-many-connected', () => {
-        window.alert("there is too many players for now, please try later when a slot is available");
-    });
 
-}
+socket.on('too-many-connected', () => {
+    window.alert("there is too many players for now, please try later when a slot is available");
+    button.disabled = false;
+});

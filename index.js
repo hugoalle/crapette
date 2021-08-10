@@ -1,17 +1,14 @@
 const express = require('express');
-let ejs = require('ejs');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-app.set("view engine", 'ejs');
-
 let users = [];
 
 app.get('/', (req, res) => {
-    res.render('index', {users: users.map(u => u.name)});
+    res.sendFile(__dirname + '/index.html');
   });
 
 app.use(express.static('public'))
@@ -19,22 +16,26 @@ app.use(express.static('public'))
 io.on('connection', (socket) => {
     console.log('a user connected with id : ' + socket.id);
 
-    socket.on("new-connection", (name) => {
-        handleNewConnection(socket, name);
-    })
-});
+    io.to(socket.id).emit('display-connected-clients', users.map(u => u.name));
 
-let handleNewConnection = function(socket, name) {
-    if (users.length >= 2) {
+    socket.on("playerSubmit", (name) => {
+        handleNewPlayer(socket, name);
+    });
+
+})
+
+let handleNewPlayer = function(socket, name) {
+
+    if (users.length === 2) {
         socket.emit('too-many-connected');
     }
     else {
         users.push({socket: socket, name: name });
-        io.emit('display-connected-client', users.map(u => u.name));
-      
-        //send html to the client after countdown
+        io.emit('display-connected-clients', users.map(u => u.name));
     }
-}  
+}
+
+
 server.listen(3000, () => {
     console.log('listening on *:3000');
 });
