@@ -59,8 +59,69 @@ socket.on('decompte', () => {
 
 let displayGame = function() {
     let boardgame = document.createElement("div");
+    boardgame.id = "boardgame";
     boardgame.style["border"] = "solid";
     boardgame.style["width"] = "1200px";
     boardgame.style["height"] = "600px";
     document.body.appendChild(boardgame);
+
+    let playerCardsDiv = [];
+    let opponentCardsDiv = [];
+
+    for (let i=0; i<4; i++) {
+        let cardDiv = document.createElement("div");
+        cardDiv.classList.add("card");
+        cardDiv.style["left"] = 350+ 120*i + "px";
+        cardDiv.style["top"] = "20px";
+
+        boardgame.appendChild(cardDiv);
+        playerCardsDiv.push(cardDiv);
+
+        let opponentCardDiv = document.createElement("div");
+        opponentCardDiv.classList.add("card");
+        opponentCardDiv.style["left"] = 350 + 120*i + "px";
+        opponentCardDiv.style["bottom"] = "20px";
+
+        boardgame.appendChild(opponentCardDiv);
+        opponentCardsDiv.push(opponentCardDiv);
+    }
+
+    let leftCard = document.createElement("div");
+    leftCard.classList.add("card");
+    leftCard.style["left"] = "50%";
+    leftCard.style["transform"] = "translateX(-100%)";
+    leftCard.style["transform"] += "translateY(-50%)";
+    leftCard.style["top"] = "50%";
+
+    let rightCard = document.createElement("div");
+    rightCard.classList.add("card");
+    rightCard.style["left"] = "50%";
+    rightCard.style["transform"] = "translateX(100%)";
+    rightCard.style["transform"] += "translateY(-50%)";
+    rightCard.style["top"] = "50%";
+
+    let nbCards = document.createElement("div");
+    nbCards.classList.add("card");
+    nbCards.style["left"] = "50px";
+    nbCards.style["bottom"] = "10px";
+
+    let nbCardsOpponent = document.createElement("div");
+    nbCardsOpponent.classList.add("card");
+    nbCardsOpponent.style["right"] = "50px";
+    nbCardsOpponent.style["top"] = "10px";
+
+    boardgame.appendChild(leftCard);
+    boardgame.appendChild(rightCard);
+    boardgame.appendChild(nbCards);
+    boardgame.appendChild(nbCardsOpponent);
+
+    let game = {
+        playerCards: playerCardsDiv,
+        opponentCards: opponentCardsDiv,
+        leftCard: leftCard,
+        rightCard: rightCard,
+        nbCards: nbCards,
+        nbCardsOpponent: nbCardsOpponent
+    };
+
 }
