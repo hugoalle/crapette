@@ -6,6 +6,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 let players = [];
+let nbPlayersReady = 0;
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -37,7 +38,14 @@ io.on('connection', (socket) => {
         players.splice(n, 1);
         //redisplay connected clients
         io.emit('display-connected-clients', players.map(u => u.name));
-    })
+    });
+
+    socket.on('boardReady', function() {
+        nbPlayersReady++;
+        if (nbPlayersReady == 2) {
+            launchGame(players[0], players[1]);
+        }
+    });
 
 })
 
@@ -59,16 +67,52 @@ let handleNewPlayer = function(socket, name) {
         });
         //we launch the countdown, on these client's page
         io.to('room1').emit('decompte');
-
-        //in 5 sec, if the two players are still connected, we launch the game
-        setTimeout(function() {
-            if (players.length == 2) {
-                //launchGame(players[0], players[1]);
-            }
-        },3000)
     }
 }
 
 server.listen(3000, () => {
     console.log('listening on *:3000');
 });
+
+let launchGame = function(p1, p2) {
+
+    let remainingCards = [
+        1,1,1,1,
+        2,2,2,2,
+        3,3,3,3,
+        4,4,4,4,
+        5,5,5,5,
+        6,6,6,6,
+        7,7,7,7,
+        8,8,8,8,
+        9,9,9,9,
+        10,10,10,10,
+        11,11,11,11,
+        12,12,12,12,
+        13,13,13,13
+    ];
+
+    //melange le tableau 
+    let currentIndex = remainingCards.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = remainingCards[currentIndex];
+        remainingCards[currentIndex] = remainingCards[randomIndex];
+        remainingCards[randomIndex] = temporaryValue;
+    }
+
+    let firstLeftCard = remainingCards.pop();
+    let firstRightCard = remainingCards.pop();
+
+    io.to('room1').emit(
+        'displayLeftRightCards', 
+        {left: firstLeftCard, right: firstRightCard}
+    );
+}

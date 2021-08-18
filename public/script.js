@@ -2,6 +2,7 @@
 let form = document.getElementById("form");
 let button = document.getElementById("button");
 let input = document.getElementById("input");
+let game = null;
 
 form.addEventListener('submit', e => {
     e.preventDefault();
@@ -57,6 +58,19 @@ socket.on('decompte', () => {
 });
 
 
+socket.on('displayLeftRightCards', values => {
+    let leftCardDiv = game.leftCard;
+    let rightCardDiv = game.rightCard;
+
+    if (values.left !== undefined) {
+        leftCardDiv.innerText = values.left;
+    }
+
+    if (values.right !== undefined) {
+        rightCardDiv.innerText = values.right;
+    }
+});
+
 let displayGame = function() {
     let boardgame = document.createElement("div");
     boardgame.id = "boardgame";
@@ -104,18 +118,21 @@ let displayGame = function() {
     nbCards.classList.add("card");
     nbCards.style["left"] = "50px";
     nbCards.style["bottom"] = "10px";
+    nbCards.innerText = "24";
 
     let nbCardsOpponent = document.createElement("div");
     nbCardsOpponent.classList.add("card");
     nbCardsOpponent.style["right"] = "50px";
     nbCardsOpponent.style["top"] = "10px";
+    nbCardsOpponent.innerText = "24";
+
 
     boardgame.appendChild(leftCard);
     boardgame.appendChild(rightCard);
     boardgame.appendChild(nbCards);
     boardgame.appendChild(nbCardsOpponent);
 
-    let game = {
+    game = {
         playerCards: playerCardsDiv,
         opponentCards: opponentCardsDiv,
         leftCard: leftCard,
@@ -124,4 +141,5 @@ let displayGame = function() {
         nbCardsOpponent: nbCardsOpponent
     };
 
+    socket.emit('boardReady');
 }
