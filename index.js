@@ -111,8 +111,16 @@ let launchGame = function(p1, p2) {
     let firstLeftCard = remainingCards.pop();
     let firstRightCard = remainingCards.pop();
 
+    let cardsP1 = remainingCards.slice(0,25);
+    let cardsP1Revealed = [cardsP1.pop(), cardsP1.pop(), cardsP1.pop(), cardsP1.pop()];
+    let cardsP2 = remainingCards.slice(25,50);
+    let cardsP2Revealed = [cardsP2.pop(), cardsP2.pop(), cardsP2.pop(), cardsP2.pop()];
+    
     io.to('room1').emit(
         'displayLeftRightCards', 
         {left: firstLeftCard, right: firstRightCard}
     );
+
+    p1.socket.emit("display-revealedCards", {myCards: cardsP1Revealed, opponentCards: cardsP2Revealed});
+    p2.socket.emit("display-revealedCards", {myCards: cardsP2Revealed, opponentCards: cardsP1Revealed});
 }

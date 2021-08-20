@@ -71,6 +71,29 @@ socket.on('displayLeftRightCards', values => {
     }
 });
 
+socket.on('display-revealedCards', value => {
+
+    if (value.myCards) {
+        let cards = value.myCards;
+        let cardsDiv = game.playerCards;
+        for (let i = 0; i<4; i++) {
+            if (cards[i]) {
+                cardsDiv[i].innerText = cards[i];
+            }
+        }
+    }
+
+    if (value.opponentCards) {
+        let cards = value.opponentCards;
+        let cardsDiv = game.opponentCards;
+        for (let i = 0; i<4; i++) {
+            if (cards[i]) {
+                cardsDiv[i].innerText = cards[i];
+            }
+        }
+    }
+})
+
 let displayGame = function() {
     let boardgame = document.createElement("div");
     boardgame.id = "boardgame";
@@ -118,13 +141,13 @@ let displayGame = function() {
     nbCards.classList.add("card");
     nbCards.style["left"] = "50px";
     nbCards.style["bottom"] = "10px";
-    nbCards.innerText = "24";
+    nbCards.innerText = "25";
 
     let nbCardsOpponent = document.createElement("div");
     nbCardsOpponent.classList.add("card");
     nbCardsOpponent.style["right"] = "50px";
     nbCardsOpponent.style["top"] = "10px";
-    nbCardsOpponent.innerText = "24";
+    nbCardsOpponent.innerText = "25";
 
 
     boardgame.appendChild(leftCard);
